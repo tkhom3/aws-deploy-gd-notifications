@@ -38,5 +38,7 @@ jobs:
      uses: aws-actions/aws-cloudformation-github-deploy@master
      with:
        name: gd-alerts
-       template: Cloudformation/gd-alerts.yaml
+       template: "Cloudformation/gd-alerts.yaml"
        no-fail-on-empty-changeset: "1"
+       parameter-overrides: >-
+          EmailAddress=${{ secrets.email_address }},
