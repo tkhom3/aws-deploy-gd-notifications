@@ -1,0 +1,30 @@
+name: Deploy
+on:
+ pull_request:
+   branches: [main]
+
+permissions:
+ id-token: write
+ contents: read# This is required for actions/checkout@v2
+
+jobs:
+ pull_request:
+   runs-on: ubuntu-latest
+
+   env:
+     AWS_DEFAULT_REGION: us-east-1
+
+   steps:
+   - name: configureawscredentials
+     uses: aws-actions/configure-aws-credentials@v1
+     with:
+       role-to-assume: arn:aws:iam::${{ secrets.aws_acct_num }}:role/${{ secrets.aws_role_name }}
+       role-session-name: samplerolesession
+       aws-region: ${{env.AWS_DEFAULT_REGION}}
+
+   - name: Checkout
+     uses: actions/checkout@v2
+
+   - name: Some AWS commands
+     run: |
+       aws sts get-caller-identity
