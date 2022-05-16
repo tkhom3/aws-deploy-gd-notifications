@@ -24,6 +24,8 @@ Resources:
       EventPattern: 
         source:
           - aws.guardduty
+        detail-type:
+          - GuardDuty Finding
       Name: GD-Findings
       Targets: 
         - Arn: !Ref AlarmNotificationTopic
