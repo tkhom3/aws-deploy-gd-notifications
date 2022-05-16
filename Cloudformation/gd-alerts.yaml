@@ -17,7 +17,6 @@ Resources:
         - Endpoint: !Ref EmailAddress
           Protocol: email
       
-      
     GuardDutyEventRule:
       Type: AWS::Events::Rule
       Properties: 
@@ -29,7 +28,7 @@ Resources:
         Targets: 
           - Arn: !Ref AlarmNotificationTopic
             Id: GDAlerts
-            RoleArn: !GetAtt EventBusCentralizedRole.Arn
+            
     GuardDutyEventRuleTransform:
       InputPathsMap: 
         "severity": "$.detail.severity",
