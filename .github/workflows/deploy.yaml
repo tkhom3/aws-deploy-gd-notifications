@@ -28,3 +28,11 @@ jobs:
    - name: Some AWS commands
      run: |
        aws sts get-caller-identity
+
+   - name: Deploy CloudFormation
+     id: gd-alerts
+     uses: aws-actions/aws-cloudformation-github-deploy@master
+     with:
+       name: gd-alerts
+       template: Cloudformation/gd-alerts.yaml
+       no-fail-on-empty-changeset: "1"
