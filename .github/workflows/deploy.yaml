@@ -20,6 +20,7 @@ jobs:
 
    steps:
    - name: configureawscredentials
+     id: creds
      uses: aws-actions/configure-aws-credentials@v1
      with:
        role-to-assume: arn:aws:iam::${{ secrets.aws_acct_num }}:role/${{ secrets.aws_role_name }}
@@ -35,7 +36,7 @@ jobs:
 
    - name: Deploy CloudFormation
      id: gd-alerts
-     uses: aws-actions/aws-cloudformation-github-deploy@master
+     uses: aws-actions/aws-cloudformation-github-deploy@v1
      with:
        name: gd-alerts
        template: "Cloudformation/gd-alerts.yaml"
