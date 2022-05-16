@@ -42,4 +42,4 @@ jobs:
        template: "Cloudformation/gd-alerts.yaml"
        no-fail-on-empty-changeset: "1"
        parameter-overrides: >-
-          EmailAddress=${{ secrets.email_address }},
+          EmailAddress=${{ secrets.email_address }}
