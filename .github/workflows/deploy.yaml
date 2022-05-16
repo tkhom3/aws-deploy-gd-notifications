@@ -19,7 +19,7 @@ jobs:
      uses: aws-actions/configure-aws-credentials@v1
      with:
        role-to-assume: arn:aws:iam::${{ secrets.aws_acct_num }}:role/${{ secrets.aws_role_name }}
-       role-session-name: github-deploy-${GITHUB_SHA}
+       role-session-name: deploy-${{ GITHUB_SHA }}
        aws-region: ${{env.AWS_DEFAULT_REGION}}
 
    - name: Checkout
