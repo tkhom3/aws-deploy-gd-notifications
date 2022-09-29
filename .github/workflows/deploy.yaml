@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   scan-with-trivy:
-    uses: tkhom3/gha-workflows/.github/workflows/scan-with-trivy-pr-config-only.yml@main
+    uses: tkhom3/gha-workflows/.github/workflows/scan-with-trivy-config-only.yml@main
 
   deploy:
     runs-on: ubuntu-latest
