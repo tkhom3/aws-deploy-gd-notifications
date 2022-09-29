@@ -1,45 +1,38 @@
-name: Deploy
+name: Scan and Deploy
+
 on:
- pull_request:
-   branches: 
-     - main
- push:
-   branches:
-     - main
+  push:
+    branches:
+      - main
 
 permissions:
- id-token: write
- contents: read
+  id-token: write
+  contents: read
 
 jobs:
- pull_request:
-   runs-on: ubuntu-latest
+  scan-with-trivy:
+    uses: tkhom3/gha-workflows/.github/workflows/scan-with-trivy-config-only.yml@main
 
-   env:
-     AWS_DEFAULT_REGION: us-east-1
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
 
-   steps:
-   - name: configureawscredentials
-     id: creds
-     uses: aws-actions/configure-aws-credentials@v1
-     with:
-       role-to-assume: arn:aws:iam::${{ secrets.aws_acct_num }}:role/${{ secrets.aws_role_name }}
-       role-session-name: deploy-${{ env.GITHUB_SHA }}
-       aws-region: ${{env.AWS_DEFAULT_REGION}}
+    - name: configureawscredentials
+      id: creds
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCT_NUM }}:role/${{ secrets.AWS_ROLE_NAME }}
+        role-session-name: deploy-${{ env.GITHUB_SHA }}
+        aws-region: ${{secrets.AWS_REGION}}
 
-   - name: Checkout
-     uses: actions/checkout@v2
-
-   - name: Some AWS commands
-     run: |
-       aws sts get-caller-identity
-
-   - name: Deploy CloudFormation
-     id: gd-alerts
-     uses: aws-actions/aws-cloudformation-github-deploy@v1
-     with:
-       name: gd-alerts
-       template: "Cloudformation/gd-alerts.yaml"
-       no-fail-on-empty-changeset: "1"
-       parameter-overrides: >-
-          EmailAddress=${{ secrets.email_address }}
+    - name: Deploy CloudFormation
+      id: gd-alerts
+      uses: aws-actions/aws-cloudformation-github-deploy@v1
+      with:
+        name: gd-alerts
+        template: "Cloudformation/gd-alerts.yaml"
+        no-fail-on-empty-changeset: "1"
+        parameter-overrides: >-
+          EmailAddress=${{ secrets.EMAIL_ADDRESS }}
